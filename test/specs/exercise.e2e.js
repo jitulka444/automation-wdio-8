@@ -10,7 +10,16 @@ describe('Czechitas Login Page', async () => {
 
         await browser.url('/prihlaseni');
 
-        await browser.saveScreenshot('screenshot.png');
+ const formTagSelector = $('form');
+        console.log(await formTagSelector.getHTML());
+
+        const inputTagSelector = $('input');
+        console.log(await inputTagSelector.getHTML());
+
+        const buttonTagSelector = $('button');
+        console.log(await buttonTagSelector.getHTML());
+
+        
 
     });
 
