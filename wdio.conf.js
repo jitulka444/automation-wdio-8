@@ -23,7 +23,7 @@ export const config = {
     maxInstances: 10,
     capabilities: [{
         maxInstances: 5,
-        browserName: 'firefox',
+        browserName: 'chrome',
         acceptInsecureCerts: true,
         'goog:chromeOptions': {
             args: [
@@ -39,7 +39,7 @@ export const config = {
         "moz:firefoxOptions": {
             // flag to activate Firefox headless mode (see https://github.com/mozilla/geckodriver/blob/master/README.md#firefox-capabilities for more details about moz:firefoxOptions)
             args: [
-                // '-headless'
+                // '--headless'
             ]
         }
     }],
