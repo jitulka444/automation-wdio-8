@@ -38,16 +38,18 @@ describe('Registration Page', async () => {
                 await emailField.setValue("michalkova.jitka@email.com");
         
                 const passwordField = $ ('#password');
-                await passwordField.setValue("1234");
+                await passwordField.setValue("Heslo1234");
         
                 const passwordconfirmField = $ ('#password-confirm');
-                await passwordconfirmField.setValue("1234");
+                await passwordconfirmField.setValue("Heslo1234");
         
                 const submitButton = $ ('.btn-primary');
                 await submitButton.click();
                 
                 const userNameDropdown = $('.navbar-right').$('[data-toggle="dropdown"]');
         console.log('User currently logged in: ' + await userNameDropdown.getText());
+
+        await expect(userNameDropdown).togetText('Jitka Michálková')
             });
         
             it('unsuccessful registration with existing email', async () => {
@@ -75,6 +77,8 @@ describe('Registration Page', async () => {
                 
                 const fieldError = $$('.invalid-feedback');
         console.log('Field error: ' + await fieldError.getText());
+
+        await expect(fieldError).togetText("Účet s tímto emailem již existuje")
             });
         
             it('unsuccessful registration with invalid password', async () => {
@@ -102,6 +106,8 @@ describe('Registration Page', async () => {
                 
                 const fieldError = $$('.invalid-feedback');
         console.log('Field error: ' + await fieldError.getText());
+
+        await expect(fieldError).togetText("Heslo musí obsahovat minimálně 6 znaků, velké i malé písmeno a číslici")
 
     });
         
