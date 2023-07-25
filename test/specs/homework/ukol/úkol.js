@@ -7,7 +7,7 @@ describe('Registration Page', async () => {
 
 });
 
-it('new registration', async () => {
+it('do new registration', async () => {
 
     const nameField = $('#name');
     const emailField = $('#email');
