@@ -1,46 +1,94 @@
-import { When, Then } from '@wdio/cucumber-framework';
-import ApplicationsPage from '../pages/applications.page.js';
+describe('Registration Page', async () => {
 
 
-When('user navigates to page {word}', async (_) => {
-    await ApplicationsPage.goToApplications();
+    beforeEach(async () => {
+        await browser.reloadSession();
+        await browser.url('/registrace');
+
 });
 
-When('user enters text into the search field: {string}', async (searchString) => {
-    await ApplicationsPage.searchInTable(searchString);
-    await ApplicationsPage.waitForTableToLoad();
-});
+it('new registration', async () => {
 
-Then('user can see between {int} to {int} applications', async (min, max) => {
-    const count = await ApplicationsPage.getTableRows().length
-    await expect(count).toBeGreaterThanOrEqual(min);
-    await expect(count).toBeLessThanOrEqual(max);
-});
+    const nameField = $('#name');
+    const emailField = $('#email');
+    const passwordField = $('#password');
+    const pswcheckfield = $('#password-confirm')
+    const submitButton = $('.btn-primary');
+                
+        
+        await nameField.setValue("Jitka Michálková");
+       
+        await emailField.setValue("michalkova.jitka@email.com");
 
-Then('applications contain valid name\, date\, payment type and remaining amount to pay', async () => {
-    for (const row of await ApplicationsPage.getTableRows()) {
-        const values = await row.getValues();
-        await expect(values.name).toMatch(/[a-zA-Z0-9#$@]/);
-        await expect(values.date).toMatch(/(\d{2}.\d{2}.\d{4}|\d{2}.\d{2}. - \d{2}.\d{2}.\d{4})/);
-        await expect(values.paymentType).toMatch(/(Bankovní převod|FKSP|Hotově|Složenka)/);
-        await expect(values.toPay).toMatch(/\d{1,3}(| \d{0,3}) Kč/);
-    }
-});
+        await passwordField.setValue("Heslo1234");
 
-Then('all names on applications contain {string}', async (searchString) => {
-    for (const row of (await ApplicationsPage.getTableRows())) {
-        const values = await row.getValues();
-        await expect(values.name.toLowerCase()).toContain(searchString);
-    }
-});
+        await pswcheckfield.setValue("Heslo1234");
 
-Then('table shows applications:', async (table) => {
-    (await ApplicationsPage.getTableRows()).forEach(async (row, index) => {
-        const actual = await row.getValues();
-        const expected = table.hashes()[index];
-        await expect(actual.name).toEqual(expected.name);
-        await expect(actual.date).toEqual(expected.date);
-        await expect(actual.paymentType).toEqual(expected.paymentType);
-        await expect(actual.toPay).toEqual(expected.toPay);
-    })
+        await submitButton.click();
+        
+        const userNameDropdown = $('.navbar-right').$('[data-toggle="dropdown"]');
+console.log('User currently logged in: ' + await userNameDropdown.getText());
+
+await expect(userNameDropdown).togetText('Jitka Michálková')
+    });
+
+it('unsuccessful registration with existing email', async () => {
+
+    const nameField = $('#name');
+    const emailField = $('#email');
+    const passwordField = $('#password');
+    const pswcheckfield = $('#password-confirm')
+    const submitButton = $('.btn-primary');
+
+        
+        
+        
+        await nameField.setValue("Jitka Michálková");
+
+
+        
+        await emailField.setValue("da-app.admin@czechitas.cz");
+
+      
+        await passwordField.setValue("Heslo1234");
+
+        
+        await pswcheckfield.setValue("Heslo1234");
+
+       
+        await submitButton.click();
+        
+        const fieldError = $$('.invalid-feedback');
+console.log('Field error: ' + await fieldError.getText());
+
+await expect(fieldError).togetText("Účet s tímto emailem již existuje")
+    });
+
+it('unsuccessful registration with invalid password', async () => {
+
+    const nameField = $('#name');
+    const emailField = $('#email');
+    const passwordField = $('#password');
+    const pswcheckfield = $('#password-confirm')
+    const submitButton = $('.btn-primary');
+
+        
+        
+       
+        await nameField.setValue("Jitka Michálková");
+
+        await emailField.setValue("michalkova.jitka@email.com");
+
+        await passwordField.setValue("1234");
+
+        await pswcheckfield.setValue("1234");
+
+        await submitButton.click();
+        
+        const fieldError = $$('.invalid-feedback');
+console.log('Field error: ' + await fieldError.getText());
+
+await expect(fieldError).togetText("Heslo musí obsahovat minimálně 6 znaků, velké i malé písmeno a číslici")
+
+});
 });
