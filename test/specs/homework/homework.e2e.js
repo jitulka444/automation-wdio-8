@@ -15,12 +15,12 @@ describe('Registration Page', async () => {
         const submitButton = $('.btn-primary');
         const userNameDropdown = $('.navbar-right').$('[data-toggle="dropdown"]');
 
-        await nameField.setValue('Jo Jo');
-        await emailField.setValue('joko55@email.com');
+        await nameField.setValue('Je Je');
+        await emailField.setValue('joko66@email.com');
         await passwordField.setValue('Heslo1234');
         await pswcheckfield.setValue('Heslo1234');
         await submitButton.click();
-        await expect(userNameDropdown).toHaveText('Jo Jo')
+        await expect(userNameDropdown).toHaveText('Je Je')
 
     })
 
