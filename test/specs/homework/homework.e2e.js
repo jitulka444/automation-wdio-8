@@ -1,114 +1,84 @@
-
-describe('Registration Page', async () => {
-
-        });
-
-    it('should show registration form', async () => {
-
-        const nameField = $('#name');
-        console.log('Name field is dislayed: ' + await nameField.isDisplayed());
-        console.log('Name field is dislayed: ' + await nameField.isEnabled());
-        
-        const emailField = $('#email');
-        console.log('Email field is dislayed: ' + await emailField.isDisplayed());
-        console.log('Email field is dislayed: ' + await emailField.isEnabled());
-
-        const passwordField = $('#password');
-        console.log('Password field is dislayed: ' + await passwordField.isDisplayed());
-        console.log('Password field is dislayed: ' + await passwordField.isEnabled());
-
-        const submitButton = $('.btn-primary');
-        console.log('Submit button is dislayed: ' + await submitButton.isDisplayed());
-        console.log('Submit button text is: ' + await submitButton.getText());
+    describe('Registration Page', async () => {
+    beforeEach(async () => {
+    await browser.reloadSession();
+    await browser.url('/registrace');
 
 });
 
- it('new registration', async () => {
+    
+    it('do new registration', async () => {
 
-                
-                await browser.reloadSession();
+    const nameField = $('#name');
+    const emailField = $('#email');
+    const passwordField = $('#password');
+    const pswcheckfield = $('#password-confirm')
+    const submitButton = $('.btn-primary');
+    const userNameDropdown = $('.navbar-right').$('[data-toggle="dropdown"]');          
         
-                await browser.url('/registrace');
-                
-                const nameField = $('#name');
-                await nameField.setValue("Jitka Michálková");
+    await nameField.setValue('Jm Jm');
+       
+    await emailField.setValue('joko333@email.com');
+    await passwordField.setValue('Heslo1234');
+    await pswcheckfield.setValue('Heslo1234');
+    await submitButton.click();
         
-        
-                const emailField = $ ('#email');
-                await emailField.setValue("michalkova.jitka@email.com");
-        
-                const passwordField = $ ('#password');
-                await passwordField.setValue("Heslo1234");
-        
-                const passwordconfirmField = $ ('#password-confirm');
-                await passwordconfirmField.setValue("Heslo1234");
-        
-                const submitButton = $ ('.btn-primary');
-                await submitButton.click();
-                
-                const userNameDropdown = $('.navbar-right').$('[data-toggle="dropdown"]');
-        console.log('User currently logged in: ' + await userNameDropdown.getText());
+    
 
-        await expect(userNameDropdown).togetText('Jitka Michálková')
-            });
-        
-            it('unsuccessful registration with existing email', async () => {
-
-                
-                await browser.reloadSession();
-        
-                await browser.url('/registrace');
-                
-                const nameField = $('#name');
-                await nameField.setValue("Jitka Michálková");
-        
-        
-                const emailField = $ ('#email');
-                await emailField.setValue("da-app.admin@czechitas.cz");
-        
-                const passwordField = $ ('#password');
-                await passwordField.setValue("Heslo1234");
-        
-                const passwordconfirmField = $ ('#password-confirm');
-                await passwordconfirmField.setValue("Heslo1234");
-        
-                const submitButton = $ ('.btn-primary');
-                await submitButton.click();
-                
-                const fieldError = $$('.invalid-feedback');
-        console.log('Field error: ' + await fieldError.getText());
-
-        await expect(fieldError).togetText("Účet s tímto emailem již existuje")
-            });
-        
-            it('unsuccessful registration with invalid password', async () => {
-
-                
-                await browser.reloadSession();
-        
-                await browser.url('/registrace');
-                
-                const nameField = $('#name');
-                await nameField.setValue("Jitka Michálková");
-        
-        
-                const emailField = $ ('#email');
-                await emailField.setValue("michalkova.jitka@email.com");
-        
-                const passwordField = $ ('#password');
-                await passwordField.setValue("1234");
-        
-                const passwordconfirmField = $ ('#password-confirm');
-                await passwordconfirmField.setValue("1234");
-        
-                const submitButton = $ ('.btn-primary');
-                await submitButton.click();
-                
-                const fieldError = $$('.invalid-feedback');
-        console.log('Field error: ' + await fieldError.getText());
-
-        await expect(fieldError).togetText("Heslo musí obsahovat minimálně 6 znaků, velké i malé písmeno a číslici")
-
+    await expect(userNameDropdown).toHaveText('Ja Ja')
     });
+    
+    it('unsuccessful registration with existing email', async () => {
+    const nameField = $('#name');
+    const emailField = $('#email');
+    const passwordField = $('#password');
+    const pswcheckfield = $('#password-confirm')
+    const submitButton = $('.btn-primary');
+    const fieldError = $('.invalid-feedback');
+    const toastMessage = $('.toast-message');
         
-
+        
+        
+    await nameField.setValue('Beruska');
+        
+    await emailField.setValue('redbar@seznam.cz');
+      
+    await passwordField.setValue('Heslo12345');
+        
+    await pswcheckfield.setValue('Heslo12345');
+       
+    await submitButton.click();
+        
+        
+    await expect(fieldError).toHaveText("Účet s tímto emailem již existuje")
+    await expect(await toastMessage.toHaveText()).toEqual('Některé pole obsahuje špatně zadanou hodnotu');
+    await expect(await passwordField).toBeDisplayed();
+    await expect(await pswcheckfield).toBeDisplayed();
+    
+    });
+    
+    it('unsuccessful registration with invalid password', async () => {
+    
+    const nameField = $('#name');
+    const emailField = $('#email');
+    const passwordField = $('#password');
+    const pswcheckfield = $('#password-confirm')
+    const submitButton = $('.btn-primary');
+    const toastMessage = $('.toast-message');
+    const fieldError = $('.invalid-feedback');
+        
+        
+       
+    await nameField.setValue('Tester');
+    await emailField.setValue('tester@email.com');
+    await passwordField.setValue('1234');
+    await pswcheckfield.setValue('1234');
+    await submitButton.click();
+        
+    await expect(await toastMessage.toHaveText()).toEqual('Některé pole obsahuje špatně zadanou hodnotu');
+    await expect(await fieldError.toHaveText()).toEqual('Heslo musí obsahovat minimálně 6 znaků, velké i malé písmeno a číslici');
+    await expect(await passwordField).toBeDisplayed();
+    await expect(await pswcheckfield).toBeDisplayed();
+        
+});
+});
+        
