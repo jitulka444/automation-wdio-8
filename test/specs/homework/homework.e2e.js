@@ -3,10 +3,10 @@
     await browser.reloadSession();
     await browser.url('/registrace');
 
-});
+})
 
     
-    it('do new registration', async () => {
+it('do new registration', async () => {
 
     const nameField = $('#name');
     const emailField = $('#email');
@@ -25,9 +25,10 @@
     
 
     await expect(userNameDropdown).toHaveText('Ja Ja')
-    });
+    })
     
-    it('unsuccessful registration with existing email', async () => {
+it('unsuccessful registration with existing email', async () => {
+    
     const nameField = $('#name');
     const emailField = $('#email');
     const passwordField = $('#password');
@@ -54,9 +55,9 @@
     await expect(await passwordField).toBeDisplayed();
     await expect(await pswcheckfield).toBeDisplayed();
     
-    });
+    })
     
-    it('unsuccessful registration with invalid password', async () => {
+it('unsuccessful registration with invalid password', async () => {
     
     const nameField = $('#name');
     const emailField = $('#email');
@@ -79,7 +80,7 @@
     await expect(await passwordField).toBeDisplayed();
     await expect(await pswcheckfield).toBeDisplayed();
         
-});
+})
 });
 
         
